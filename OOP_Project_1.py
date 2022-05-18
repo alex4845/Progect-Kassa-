@@ -31,13 +31,17 @@ class Cheke_list():
         if type == "телефон":
             chek1 = Phone(Cheke_list.count, type, date, "16.05.2022", name, "в процессе", mark, o_s, description)
 
-        if type == "ноутбук":
+        elif type == "ноутбук":
             ear = input("Какой год вашего ноутбука ")
             chek4 = Book(Cheke_list.count, type, date, "17.05.2022", name, "в процессе", mark, o_s, ear, description)
 
-        if type == "телевизор":
+        elif type == "телевизор":
             size = input("Какая диагональ вашего телевизора ")
             chek3 = Monitor(Cheke_list.count, type, date, "18.05.2022", name, "в процессе", mark, size, description)
+        else:
+            print("Неправильный тип техники")
+            return
+        print("Ваша квитанция:", b[-1])
 
     @staticmethod
     def menu():
@@ -46,8 +50,8 @@ class Cheke_list():
                        "3 - открыть панель администратора\n"
                        "4 - выход ")
         if change == "1": Cheke_list.new_client()
-        if change == "2": Cheke_list.list_info()
-        if change == "3": Cheke_list.admin_panel()
+        elif change == "2": Cheke_list.list_info()
+        elif change == "3": Cheke_list.admin_panel()
         else: exit(0)
 
     @staticmethod
@@ -188,8 +192,9 @@ c = Cheke_list.c
 
 while True:
     Cheke_list.menu()
-    for i in b:
-        print(i)
+
+#    for i in b:
+#        print(i)
 
 
 
