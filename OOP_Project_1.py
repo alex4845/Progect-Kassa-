@@ -1,10 +1,16 @@
 
-b, s = [], []
-
-import datetime
+b = []
+s = []
+import json
+with open("list.txt", "r", encoding="utf-8") as list:
+    y = list.readlines()
+    for i in y:
+        b = json.loads(i)
+    for i in b: print("begin", i)
+import random
+from datetime import datetime, timedelta
 class Cheke_list():
-    count = 1
-    c = []
+
     def __init__(self, number, type, date, date_res, name, status):
         self.number = number
         self.type = type
@@ -12,9 +18,6 @@ class Cheke_list():
         self.date_res = date_res
         self.name = name
         self.status = status
-        Cheke_list.count += 1
-        a = self
-        Cheke_list.c.append(a)
 
     @staticmethod
     def new_client():
@@ -27,21 +30,26 @@ class Cheke_list():
         else:
             o_s = "android"
         description = input("Введите неисправность ")
-        date = datetime.date.today().strftime("%d.%m.%Y")
+        date = datetime.today().strftime("%d.%m.%Y")
+        d = datetime.today() + timedelta(days=random.randint(1, 5))
         if type == "телефон":
-            chek1 = Phone(Cheke_list.count, type, date, "16.05.2022", name, "в процессе", mark, o_s, description)
+            chek1 = Phone(len(b) + 1, type, date, d.strftime("%d.%m.%Y"), name, "в процессе", mark, o_s, description)
 
         elif type == "ноутбук":
             ear = input("Какой год вашего ноутбука ")
-            chek4 = Book(Cheke_list.count, type, date, "17.05.2022", name, "в процессе", mark, o_s, ear, description)
+            chek4 = Book(len(b) + 1, type, date, d.strftime("%d.%m.%Y"), name, "в процессе", mark, o_s, ear, description)
 
         elif type == "телевизор":
             size = input("Какая диагональ вашего телевизора ")
-            chek3 = Monitor(Cheke_list.count, type, date, "18.05.2022", name, "в процессе", mark, size, description)
+            chek3 = Monitor(len(b) + 1, type, date, d.strftime("%d.%m.%Y"), name, "в процессе", mark, size, description)
         else:
             print("Неправильный тип техники")
             return
         print("Ваша квитанция:", b[-1])
+
+        with open("list.txt", "w", encoding="utf-8") as list:
+            b1 = json.dumps(b)
+            list.writelines(b1 + "\n")
 
     @staticmethod
     def menu():
@@ -68,8 +76,6 @@ class Cheke_list():
             else: r += 1
             if r == len(s): print("нет такого логина ")
 
-
-
     @staticmethod
     def list_info():
         r = 0
@@ -81,8 +87,6 @@ class Cheke_list():
                 r += 1
                 if r == len(b): print("Ничего не найдено")
 
-
-
 class Admin():
 
     def __init__(self, name, login, password):
@@ -91,7 +95,6 @@ class Admin():
         self.password = password
         c = [self.name, self.login, self.password]
         s.append(c)
-
 
     @staticmethod
     def admins_action():
@@ -123,21 +126,14 @@ class Admin():
             search = input("Номер квитанции ")
             print(b[int(search) - 1])
             new_status = input("Новый статус ")
-            for i in range(0, len(c)):
-                if c[i].number == int(search):
-                    c[i].status = new_status
-                    b[i][6] = new_status
-                    Cheke_list.list_info()
+            b[int(search) - 1][6] = new_status
+            print(b[int(search) - 1])
         if change == "2":
             search = input("Номер квитанции ")
             print(b[int(search) - 1])
             new_date_res = input("Введите новую дату выполнения заказа ")
-            for i in range(0, len(c)):
-                if c[i].number == int(search):
-                    c[i].date_res = new_date_res
-                    b[i][4] = new_date_res
-                    Cheke_list.list_info()
-
+            b[int(search) - 1][4] = new_date_res
+            print(b[int(search) - 1])
 
 class Phone(Cheke_list):
 
@@ -149,7 +145,6 @@ class Phone(Cheke_list):
         a = [self.number, self.name, self.type, self.date, self.date_res,
              self.status, self.mark, self.o_s, self.description]
         b.append(a)
-
 
 class Book(Cheke_list):
 
@@ -174,27 +169,13 @@ class Monitor(Cheke_list):
              self.status, self.mark, self.size, self.description]
         b.append(a)
 
-
-chek2 = Book(Cheke_list.count, "ноутбук", "11.05.2022", "16.05.2022", "Иван Иванович Макашов",
-             "в работе", "apple", "IOS", "2015", "не включается")
-chek5 = Monitor(Cheke_list.count, "телевизор", datetime.date.today().strftime("%d.%m.%Y"), "19.05.2022", "Козловский Данила",
-                "принят в работу", "toshiba", "105", "нет звука")
-chek6 = Book(Cheke_list.count, "ноутбук", datetime.date.today().strftime("%d.%m.%Y"), "22.05.2022", "Макашов И.И.",
-                "в работе", "HP", "Windows 11", "2021", "отломана крышка")
-chek7 = Phone(Cheke_list.count, "телефон", datetime.date.today().strftime("%d.%m.%Y"), "21.05.2022", "Козловский Данила",
-                "готов", "nokia", "android", "побит экран")
-
 admin1 = Admin("Денисов М.М.", "bigboss", "12345")
 admin2 = Admin("Вертинский Андрей", "andrey28", "andru_87")
 admin3 = Admin("Драко А.Н.", "dragon", "And_2020")
 
-c = Cheke_list.c
-
 while True:
     Cheke_list.menu()
 
-#    for i in b:
-#        print(i)
 
 
 
